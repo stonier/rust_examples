@@ -1,0 +1,26 @@
+{
+    "name": "rust-examples",
+    "build": {
+        "dockerfile": "./Dockerfile",
+        "args": {
+            "NAME": "rust-examples",
+            "RUST_VERSION": "1.71",
+            "DEBIAN_VERSION": "bullseye"
+        },
+        "context": ".."
+    },
+    "remoteUser": "zen",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bierner.github-markdown-preview",
+                "bierner.markdown-preview-github-styles",
+                "bungcip.better-toml",
+                "github.vscode-github-actions",
+                "rust-lang.rust-analyzer",
+                "streetsidesoftware.code-spell-checker",
+                "tht13.rst-vscode"
+            ]
+        }
+    }
+}
