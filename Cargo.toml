@@ -9,7 +9,17 @@ repository = "https://github.tmc-stargate.com/arene-driving/thirteenth-floor-rus
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[dependencies]
+[dev-dependencies]
+env_logger = { version = "0.10.0" }                                 # miette, eyre
+color-eyre = "0.6"                                                  # eyre
+log = { version = "0.4.19" }                                        # miette, eyre
+miette = { version = "5.10.0", features = ["backtrace", "fancy"] }  # miette
+thiserror = { version = "1.0.40" }                                  # miette, eyre
+
+tracing-error = { version = "0.2.0" }
+tracing-subscriber = { version = "0.3.0", features = [ "env-filter" ] }
+tracing = { version = "0.1.13" }
+
 # yaml-include = { version = "0.7.0" }
 
 # Enable a small amount of optimization in debug mode
