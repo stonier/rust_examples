@@ -16,10 +16,6 @@ log = { version = "0.4.19" }                                        # miette, ey
 miette = { version = "5.10.0", features = ["backtrace", "fancy"] }  # miette
 thiserror = { version = "1.0.40" }                                  # miette, eyre
 
-tracing-error = { version = "0.2.0" }
-tracing-subscriber = { version = "0.3.0", features = [ "env-filter" ] }
-tracing = { version = "0.1.13" }
-
 # yaml-include = { version = "0.7.0" }
 
 # Enable a small amount of optimization in debug mode
