@@ -30,9 +30,15 @@ where
     E: std::error::Error + 'static
 {
     if let Err(error) = result {
-        let e = Box::new(error);
-        let f = &(*e);  // <-- this is how to get the error out of the box
-        println!("f: {}", f);
+        let boxed_error = Box::new(error);
+
+        // let reffed = &(*boxed_error);      // how to get a ref to the value
+        let reffed = boxed_error.as_ref(); // same as previous ine
+        info!("referenced: {}", reffed);
+
+        // Move the value out of the box
+        let moved = *boxed_error;
+        info!("moved: {}", moved);
     };
 
 }
@@ -44,6 +50,7 @@ fn main() {
     std::env::set_var("RUST_LOG", "info");
     env_logger::init();
 
-    dereference_a_boxed_trait_object(Err(ExampleError::MusicalJane));
+    let result = Err(ExampleError::MusicalJane);
+    dereference_a_boxed_trait_object(result);
 }
 
