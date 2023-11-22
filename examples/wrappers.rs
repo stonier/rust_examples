@@ -82,9 +82,9 @@ fn main() {
             foobar: 3.0
         }
     };
-    println!("SuperFoobar: {:?}", *s1);
+    println!("SuperFoobar: {:?}", *s1);  // This prints you FooBar
     s1.doit();
-    println!("SuperFoobar: {:?}", *s1);
+    println!("SuperFoobar: {:?}", s1);   // This prints you SuperFooBar
 
     let mut newfoobar = NewFooBar(FooBar {
         foo: 3.1,
