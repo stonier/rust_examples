@@ -8,6 +8,8 @@
 // Dependencies
 // ***************************************************************************
 
+use std::hint::black_box;
+
 type Point3 = nalgebra::geometry::Point3<f64>;
 type Translation3 = nalgebra::geometry::Translation3<f64>;
 type Isometry3 = nalgebra::geometry::Isometry3<f64>;
@@ -79,11 +81,11 @@ fn main() {
         let start = std::time::SystemTime::now();
         for i in 1..=10000000 {
             let p = Point3::new(i as f64, 0.0, 0.0);
-            let transform = std::hint::black_box(trans1 * trans2);
+            let transform = black_box(black_box(trans1) * black_box(trans2));
             if let Some(inverse) = transform.try_inverse() {
-                let _ = std::hint::black_box(transform * inverse);
+                let _ = black_box(black_box(transform) * black_box(inverse));
             }
-            let _ = std::hint::black_box(transform.transform_point(&p));
+            let _ = black_box(black_box(transform).transform_point(&black_box(p)));
         }
         let end = std::time::SystemTime::now();
         let duration = end.duration_since(start).unwrap();
@@ -93,10 +95,10 @@ fn main() {
         let start = std::time::SystemTime::now();
         for i in 1..=10000000 {
             let p = Point3::new(i as f64, 0.0, 0.0);
-            let iso = std::hint::black_box(iso1 * iso2);
+            let iso = black_box(black_box(iso1) * black_box(iso2));
             let inverse = iso.inverse();
-            let _ = std::hint::black_box(iso * inverse);
-            let _ = std::hint::black_box(iso * p);
+            let _ = black_box(black_box(iso) * black_box(inverse));
+            let _ = black_box(black_box(iso) * black_box(p));
         }
         let end = std::time::SystemTime::now();
         let duration = end.duration_since(start).unwrap();
@@ -106,10 +108,10 @@ fn main() {
         let start = std::time::SystemTime::now();
         for i in 1..=10000000 {
             let p = Point3::new(i as f64, 0.0, 0.0);
-            let isom = std::hint::black_box(isom1 * isom2);
+            let isom = black_box(black_box(isom1) * black_box(isom2));
             let inverse = isom.inverse();
-            let _ = std::hint::black_box(isom * inverse);
-            let _ = std::hint::black_box(isom * p);
+            let _ = black_box(black_box(isom) * black_box(inverse));
+            let _ = black_box(black_box(isom) * black_box(p));
         }
         let end = std::time::SystemTime::now();
         let duration = end.duration_since(start).unwrap();
