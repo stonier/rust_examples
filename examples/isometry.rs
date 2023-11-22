@@ -70,7 +70,9 @@ fn main() {
         for i in 1..=10000000 {
             let p = Point3::new(i as f64, 0.0, 0.0);
             let transform = trans1*trans2;
-            // let _ = transform*transform.try_inverse();
+            if let Some(inverse) = transform.try_inverse() {
+                let _ = transform*inverse;
+            }
             let _ = transform.transform_point(&p);
         }
         let end = std::time::SystemTime::now();
