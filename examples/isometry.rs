@@ -11,6 +11,8 @@
 type Point3 = nalgebra::geometry::Point3<f64>;
 type Translation3 = nalgebra::geometry::Translation3<f64>;
 type Isometry3 = nalgebra::geometry::Isometry3<f64>;
+type IsometryMatrix3 = nalgebra::geometry::IsometryMatrix3<f64>;
+type Rotation3 = nalgebra::geometry::Rotation3<f64>;
 type Quaternion = nalgebra::geometry::UnitQuaternion<f64>;
 type Vector3 = nalgebra::base::Vector3<f64>;
 type Transform3 = nalgebra::geometry::Transform<f64, nalgebra::TAffine, 3>;
@@ -25,13 +27,18 @@ fn main() {
 
     let axisangle1 = Vector3::y() * std::f64::consts::FRAC_PI_2;
     let q1 = Quaternion::new(axisangle1);
+    let r1 = Rotation3::new(axisangle1);
     let t1 = Translation3::new(1.0, 0.0, 0.0);
     let iso1 = Isometry3::from_parts(t1, q1);
 
     let axisangle2 = Vector3::y() * std::f64::consts::FRAC_PI_2;
     let q2 = Quaternion::new(axisangle2);
+    let r2 = Rotation3::new(axisangle2);
     let t2 = Translation3::new(1.0, 2.0, 3.0);
     let iso2 = Isometry3::from_parts(t2, q2);
+
+    let isom1 = IsometryMatrix3::from_parts(t1, r1);
+    let isom2 = IsometryMatrix3::from_parts(t2, r2);
 
     // Ugh, returns you a Matrix, not a Transform
     let _this_is_4x4_matrix_not_transform = iso1.to_homogeneous();
@@ -90,6 +97,18 @@ fn main() {
         let end = std::time::SystemTime::now();
         let duration = end.duration_since(start).unwrap();
         println!("Isometry took {} seconds", duration.as_secs_f64());
+    }
+    {
+        let start = std::time::SystemTime::now();
+        for i in 1..=10000000 {
+            let p = Point3::new(i as f64, 0.0, 0.0);
+            let isom = isom1*isom2;
+            let _ = isom*isom.inverse();
+            let _ = isom*p;
+        }
+        let end = std::time::SystemTime::now();
+        let duration = end.duration_since(start).unwrap();
+        println!("IsometryMatrix took {} seconds", duration.as_secs_f64());
     }
 }
 
