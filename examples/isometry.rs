@@ -54,20 +54,23 @@ fn main() {
     //  - Transforms are more awkward ... less operators exist and need 'try' on some apis
 
     println!("Usability - Transform Point");
-    println!(" - iso1*iso2: {:?}", iso1*iso2);
-    println!(" - trans1*trans2: {:?}", trans1*trans2);
+    println!(" - iso1*iso2: {:?}", iso1 * iso2);
+    println!(" - trans1*trans2: {:?}", trans1 * trans2);
 
     println!("Usability - Transform Point");
-    println!(" - iso1*p {:?}", iso1*p);
-    println!(" - trans1.transform_point(&p): {:?}", trans1.transform_point(&p));
+    println!(" - iso1*p {:?}", iso1 * p);
+    println!(
+        " - trans1.transform_point(&p): {:?}",
+        trans1.transform_point(&p)
+    );
 
     println!("Usability - Inverse");
-    let identity = iso1*iso1.inverse();
+    let identity = iso1 * iso1.inverse();
     assert_eq!(Isometry3::identity(), identity);
     println!(" - iso1*iso1.inverse() {:?}", identity);
     // can't guarantee an inverse with Transform, so...
     if let Some(inverse) = trans1.try_inverse() {
-        println!(" - trans1*trans1.inverse() {:?}", trans1*inverse);
+        println!(" - trans1*trans1.inverse() {:?}", trans1 * inverse);
     }
 
     // Performance - Transform wins here
@@ -76,11 +79,11 @@ fn main() {
         let start = std::time::SystemTime::now();
         for i in 1..=10000000 {
             let p = Point3::new(i as f64, 0.0, 0.0);
-            let transform = trans1*trans2;
+            let transform = std::hint::black_box(trans1 * trans2);
             if let Some(inverse) = transform.try_inverse() {
-                let _ = transform*inverse;
+                let _ = std::hint::black_box(transform * inverse);
             }
-            let _ = transform.transform_point(&p);
+            let _ = std::hint::black_box(transform.transform_point(&p));
         }
         let end = std::time::SystemTime::now();
         let duration = end.duration_since(start).unwrap();
@@ -90,9 +93,10 @@ fn main() {
         let start = std::time::SystemTime::now();
         for i in 1..=10000000 {
             let p = Point3::new(i as f64, 0.0, 0.0);
-            let iso = iso1*iso2;
-            let _ = iso*iso.inverse();
-            let _ = iso*p;
+            let iso = std::hint::black_box(iso1 * iso2);
+            let inverse = iso.inverse();
+            let _ = std::hint::black_box(iso * inverse);
+            let _ = std::hint::black_box(iso * p);
         }
         let end = std::time::SystemTime::now();
         let duration = end.duration_since(start).unwrap();
@@ -102,13 +106,13 @@ fn main() {
         let start = std::time::SystemTime::now();
         for i in 1..=10000000 {
             let p = Point3::new(i as f64, 0.0, 0.0);
-            let isom = isom1*isom2;
-            let _ = isom*isom.inverse();
-            let _ = isom*p;
+            let isom = std::hint::black_box(isom1 * isom2);
+            let inverse = isom.inverse();
+            let _ = std::hint::black_box(isom * inverse);
+            let _ = std::hint::black_box(isom * p);
         }
         let end = std::time::SystemTime::now();
         let duration = end.duration_since(start).unwrap();
         println!("IsometryMatrix took {} seconds", duration.as_secs_f64());
     }
 }
-
