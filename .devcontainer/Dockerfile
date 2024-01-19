@@ -86,7 +86,7 @@ RUN rustup component add clippy \
     && rustup component add rustfmt \
     && cargo install cargo-rdme \
     && cargo install cargo-expand \
-    && cargo install binstall
+    && cargo install cargo-binstall
 
 # The previous command re-roots permissions in ${CARGO_HOME} after the base image
 # configured them to be wide. Re-establish wide permissions for zen.

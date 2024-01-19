@@ -4,7 +4,7 @@
         "dockerfile": "./Dockerfile",
         "args": {
             "NAME": "rust-examples",
-            "RUST_VERSION": "1.71",
+            "RUST_VERSION": "1.74",
             "DEBIAN_VERSION": "bullseye"
         },
         "context": ".."
