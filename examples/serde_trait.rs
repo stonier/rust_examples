@@ -7,7 +7,10 @@ trait Marker: Debug {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Vehicle;
+struct Vehicle {
+    category: String
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 struct Bicycle;
 
@@ -30,6 +33,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let file = r#"
         labels:
             - name: Vehicle
+              category: car
             - name: Bicycle
     "#;
 
