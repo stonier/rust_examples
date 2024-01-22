@@ -661,6 +661,7 @@ dependencies = [
  "serde",
  "serde_yaml",
  "thiserror",
+ "tupleops",
  "typetag",
 ]
 
@@ -931,6 +932,31 @@ dependencies = [
  "sharded-slab",
  "thread_local",
  "tracing-core",
+]
+
+[[package]]
+name = "tupleops"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9e290078fe0f775c39aebc49987d4aac90c3b9539316acb240dc9ec2a4611156"
+dependencies = [
+ "tupleops-macros",
+]
+
+[[package]]
+name = "tupleops-generator"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "136120de3f8963f0d6e1d736aead1c3ed0632c72f5a97f5ed1854818d69b6271"
+
+[[package]]
+name = "tupleops-macros"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ae3b0b025de1c76e24a54d30c8b0a0f4c019de78f5ed525d708bafd4b4717caa"
+dependencies = [
+ "syn 1.0.109",
+ "tupleops-generator",
 ]
 
 [[package]]
