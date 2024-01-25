@@ -21,7 +21,7 @@ nalgebra = { version = "0.32.2" }                                   # isometry
 serde = { version = "1.0.193" }                                     # serde_trait
 serde_yaml = { version = "0.9.21" }                                 # serde_trait
 typetag = { version = "0.2.15" }                                    # serde_trait
-thiserror = { version = "1.0.40" }                                  # miette, eyre
+thiserror = { version = "1.0.56" }                                  # miette, eyre
 tupleops = { version = "0.1.1" }                                    # tuples
 # yaml-include = { version = "0.7.0" }
 
