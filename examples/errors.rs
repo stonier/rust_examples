@@ -19,20 +19,6 @@ use thiserror::Error;
 // Error Types
 // ***************************************************************************
 
-#[derive(Debug)]
-pub struct ReThrownError {
-    pub rethrown_error: Box<dyn std::error::Error>,  // or std::any::Any?
-}
-
-impl std::error::Error for ReThrownError {}
-
-/// Rethrow the display for the underlying error type.
-impl std::fmt::Display for ReThrownError {
-    // Send the payload to the display.
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.rethrown_error)
-    }
-}
 #[derive(Debug, Error)]
 pub enum MixError {
     #[error("There is no spoon")]
