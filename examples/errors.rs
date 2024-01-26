@@ -21,8 +21,8 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum MixError {
-    #[error("There is no spoon")]
-    NoSpoon,
+    #[error("There is no spoon, but {forks} forks.")]
+    NoSpoon { forks: u64 },
     #[error("These noodles are simulated")]
     ThirteenthFloor,
 }
@@ -42,6 +42,7 @@ pub enum TopLevelError {
     BoringError,
     #[error("A rethrow of an arbitrary (possibly unknown) error kind.")]
     ArbitraryError {
+        #[from]
         source: Box<dyn std::error::Error>
     },
     #[error("Remap from FetchError")]
@@ -61,8 +62,30 @@ pub enum Ingredient {
 // Methods
 // ***************************************************************************
 
-pub fn mix() -> Result<(), MixError> {
-    Err(MixError::NoSpoon)
+// pub fn fetch_spoon() -> Result<(), Box<dyn std::error::Error>> {
+//     Err( MixError::NoSpoon { forks: 4 })?;
+//     Ok(())
+// }
+// Automatically converts the box to TopLevelError::Arbitrary
+// pub fn mix() -> Result<(), TopLevelError> {
+//     fetch_spoon()?;
+//     Ok(())
+// }
+
+pub fn fetch_spoon() -> Result<(), MixError> {
+    Err( MixError::NoSpoon { forks: 4 })?;
+    Ok(())
+}
+
+pub fn mix() -> Result<(), TopLevelError> {
+    match fetch_spoon() {
+        Ok(_) => Ok(()),
+        Err(e) => Err(
+            TopLevelError::ArbitraryError {
+                source: Box::new(e),
+            }
+        ),
+    }
 }
 
 pub fn fetch_ingredient(ingredient: Ingredient) -> Result<(), FetchError> {
@@ -85,11 +108,23 @@ fn main() {
             Ok(_) => println!(" -> Alles is ok"),
             Err(e) => println!(" -> {:?}", e)
         }
-        println!("Mix:");
-        match mix() {
-            Ok(_) => println!(" -> Alles is ok"),
-            Err(e) => println!(" -> {:?}", e)
-        }
+    }
+    println!("Mix:");
+    match mix() {
+        Ok(_) => println!(" -> Alles is ok"),
+        Err(TopLevelError::ArbitraryError { source }) => {
+            println!(" -> ArbitraryError");
+            // No downcasting needed if you just want to Debug or Display it
+            println!(" ---> {}", source);
+            println!(" ---> {:?}", source);
+            if let Some(mix_err) = source.downcast_ref::<MixError>() {
+                match mix_err {
+                    MixError::NoSpoon { forks } => { println!(" ---> # Forks: {forks}"); },
+                    _ => { println!(" ---> Nothing to see here"); }
+                }
+            }
+        },
+        Err(e) => println!(" -> {:?}", e)
     }
     println!("\nMay you be blessed by a tickle from his noodly appendages...\n");
 }
