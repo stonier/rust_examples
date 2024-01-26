@@ -131,9 +131,10 @@ fn main() {
             // No downcasting needed if you just want to Debug or Display it
             println!(" ---> {}", source);
             println!(" ---> {:?}", source);
+            // Can rattle off a series of 'if let' attempts here till one fires
             if let Some(mix_err) = source.downcast_ref::<MixError>() {
                 match mix_err {
-                    MixError::NoSpoon { forks } => { println!(" ---> # Forks: {forks}"); },
+                    MixError::NoSpoon { forks } => { println!(" -----> # Forks: {forks}"); },
                     _ => { println!(" ---> Nothing to see here"); }
                 }
             }
