@@ -111,12 +111,12 @@ fn main() {
         match cook(ingredient) {
             Ok(_) => println!(" -> Alles is ok"),
             Err(e) => {
-                println!(" ---> {}", e);
                 println!(" ---> {:?}", e);
+                println!(" ---> {}", e);
                 match e {
                     TopLevelError::FakeError { source } => {
-                        println!(" -----> {}", source);
                         println!(" -----> {:?}", source);
+                        println!(" -----> {}", source);
                     },
                     _ => {}
                 }
@@ -126,20 +126,25 @@ fn main() {
     println!("Mix:");
     match mix() {
         Ok(_) => println!(" -> Alles is ok"),
-        Err(TopLevelError::ArbitraryError { source }) => {
-            println!(" -> ArbitraryError");
-            // No downcasting needed if you just want to Debug or Display it
-            println!(" ---> {}", source);
-            println!(" ---> {:?}", source);
-            // Can rattle off a series of 'if let' attempts here till one fires
-            if let Some(mix_err) = source.downcast_ref::<MixError>() {
-                match mix_err {
-                    MixError::NoSpoon { forks } => { println!(" -----> # Forks: {forks}"); },
-                    _ => { println!(" ---> Nothing to see here"); }
+        Err(e) => {
+            println!(" -> {:?}", e);
+            println!(" -> {}", e);
+            match e {
+                TopLevelError::ArbitraryError { source } => {
+                    // No downcasting needed if you just want to Debug or Display it
+                    println!(" ---> {:?}", source);
+                    println!(" ---> {}", source);
+                    // Can rattle off a series of 'if let' attempts here till one fires
+                    if let Some(mix_err) = source.downcast_ref::<MixError>() {
+                        match mix_err {
+                            MixError::NoSpoon { forks } => { println!(" -----> # Forks: {forks}"); },
+                            _ => { println!(" ---> Nothing to see here"); }
+                        }
+                    }
                 }
+                _ => {},
             }
         },
-        Err(e) => println!(" -> {:?}", e)
     }
     println!("\nMay you be blessed by a tickle from his noodly appendages...\n");
 }
