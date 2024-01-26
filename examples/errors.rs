@@ -62,6 +62,8 @@ pub enum Ingredient {
 // Methods
 // ***************************************************************************
 
+// Option 1: Conversion is done on the fly in the Result.
+
 // pub fn fetch_spoon() -> Result<(), Box<dyn std::error::Error>> {
 //     Err( MixError::NoSpoon { forks: 4 })?;
 //     Ok(())
@@ -71,6 +73,8 @@ pub enum Ingredient {
 //     fetch_spoon()?;
 //     Ok(())
 // }
+
+// Option 2: Convert manually
 
 pub fn fetch_spoon() -> Result<(), MixError> {
     Err( MixError::NoSpoon { forks: 4 })?;
@@ -106,7 +110,17 @@ fn main() {
         println!("Ingredient: {:?}", ingredient);
         match cook(ingredient) {
             Ok(_) => println!(" -> Alles is ok"),
-            Err(e) => println!(" -> {:?}", e)
+            Err(e) => {
+                println!(" ---> {}", e);
+                println!(" ---> {:?}", e);
+                match e {
+                    TopLevelError::FakeError { source } => {
+                        println!(" -----> {}", source);
+                        println!(" -----> {:?}", source);
+                    },
+                    _ => {}
+                }
+            },
         }
     }
     println!("Mix:");
