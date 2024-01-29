@@ -31,6 +31,12 @@ fn substitute_for_none(foo: Option<Foo>) {
     println!("With Substitute: {:?}", with_substitute);
 }
 
+fn ok_or(foo: Option<Foo>) -> Result<(), CustomError> {
+    let foo = foo.ok_or(CustomError {})?;
+    println!("foo is {:?}", foo);
+    Ok(())
+}
+
 fn if_let(foo: Option<Foo>) {
     if let Some(if_let) = foo {
         println!("If Let: foo is {:?}", if_let);
@@ -68,6 +74,9 @@ fn main() -> std::result::Result<(), CustomError> {
 
     if_let(five);
     if_let(nothing);
+
+    ok_or(five)?;
+    ok_or(nothing)?;
 
     let _ = error_on_none(five)?;
 //    let _ = error_on_none(nothing)?;  // prints "Error: CustomError" on stdout and then exits
