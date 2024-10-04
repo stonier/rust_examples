@@ -8,8 +8,8 @@
 #  - 300MB
 ################################################################################
 
-ARG RUST_VERSION=1.71
-ARG DEBIAN_VERSION=bullseye
+ARG RUST_VERSION=1.81
+ARG DEBIAN_VERSION=bookworm
 
 FROM rust:${RUST_VERSION}-slim-${DEBIAN_VERSION}
 
@@ -85,8 +85,7 @@ RUN echo "export PS1='\[\033[01;36m\](docker)\[\033[00m\] \[\033[01;32m\]\u@${NA
 RUN rustup component add clippy \
     && rustup component add rustfmt \
     && cargo install cargo-rdme \
-    && cargo install cargo-expand \
-    && cargo install cargo-binstall
+    && cargo install cargo-expand
 
 # The previous command re-roots permissions in ${CARGO_HOME} after the base image
 # configured them to be wide. Re-establish wide permissions for zen.
