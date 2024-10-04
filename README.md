@@ -1,3 +1,3 @@
 # Rust Examples
 
-A sandbox of experiments and examples for future reference.
+A sandbox of experiments / examples for future reference.
