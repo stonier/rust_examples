@@ -21,7 +21,8 @@ jobs:
     container:
       image: ghcr.io/catthehacker/ubuntu:runner-22.04
       volumes:
-        - /sys/:/sys/ 
+#        - /sys/:/sys/
+        - /sys/kernel/debug:/sys/kernel/debug
       options: --privileged
       ports:
         - 7777
