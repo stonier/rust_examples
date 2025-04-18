@@ -1,0 +1,37 @@
+name: telemetry
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - devel
+    paths:
+      - .github/workflows/telemetry.yaml
+
+permissions:
+  # For telemetry
+  actions: read
+  pull-requests: write
+  # For checkout
+  contents: read
+
+jobs:
+  telemetry:
+    runs-on: [ubuntu-latest]
+    container:
+      image: ghcr.io/catthehacker/ubuntu:runner-22.04
+      volumes:
+        - /sys/:/sys/
+#        - /sys/kernel/debug:/sys/kernel/debug
+      options: --privileged
+      ports:
+        - 7777
+    steps:
+    - name: Telemetry
+      uses: catchpoint/workflow-telemetry-action@v2
+      with:
+          comment_on_pr: false
+          job_summary: true
+    - name: Zen
+      shell: bash
+      run: ls
